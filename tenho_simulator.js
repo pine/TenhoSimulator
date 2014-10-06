@@ -246,7 +246,13 @@ var TenhoSimulator = (function() {
       event.preventDefault();
       event.stopPropagation();
       
-      startPnaclModule();
+      try {
+        startPnaclModule();
+      }
+      
+      catch(e) {
+        $('#graph_area').text('エラーが発生しました。未対応のブラウザのようです。');
+      }
     });
   });
   
