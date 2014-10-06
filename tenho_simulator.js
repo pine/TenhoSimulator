@@ -258,7 +258,7 @@ var TenhoSimulator = (function() {
   
   return {
     onLoad: function () {
-      $('#statusField').text('ロード完了');
+      $('#graph_area').text('ロード完了');
       NACL_MODULE = document.getElementById('pnacl_module');
       initPnaclModule();
     },
