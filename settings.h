@@ -38,6 +38,11 @@ public:
 		int32_t grade
 		);
 	
+	// 初期ポイント
+	int32_t GetInitialPoint(
+		int32_t grade
+		);
+	
 	// 後段するかどうか
 	void SetSubsequentStage(
 		int32_t grade,

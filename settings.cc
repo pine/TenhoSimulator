@@ -45,6 +45,21 @@ int32_t TenhoSimulatorSettings::GetPromotedPoint(
 	return this->promoted_point[grade];
 }
 
+int32_t TenhoSimulatorSettings::GetInitialPoint(
+		int32_t grade
+		)
+{
+	if (grade == GRADE_MAX - 1) {
+		return 0;
+	}
+	
+	else if (this->IsSubsequentStage(grade)) {
+		return this->GetPromotedPoint(grade) / 2;
+	}
+	
+	return 0;
+}
+
 void TenhoSimulatorSettings::SetSubsequentStage(
 	int32_t grade,
 	bool    value

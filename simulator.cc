@@ -95,7 +95,7 @@ void TenhoSimulator::computeGrade(
 		// 後段する階級か (後段する場合 true)
 		if (this->settings->IsSubsequentStage(worker->grade)) {
 			// 初期値
-			int32_t initial_point = this->settings->GetPromotedPoint(worker->grade - 1) / 2;
+			int32_t initial_point = this->settings->GetInitialPoint(worker->grade - 1);
 			
 			--worker->grade; // 後段
 			worker->point = initial_point;
@@ -111,9 +111,9 @@ void TenhoSimulator::computeGrade(
 	// 規定ポイント以上 & 鳳凰以外
 	else if (promoted_point <= worker->point && worker->grade + 1 < GRADE_MAX) {
 		// 初期値
-		int32_t initial_point = this->settings->GetPromotedPoint(worker->grade + 1) / 2;
+		int32_t initial_point = this->settings->GetInitialPoint(worker->grade + 1);
 		
-		++worker->grade; // 後段
+		++worker->grade; // 昇段
 		worker->point = initial_point;
 	}
 }
