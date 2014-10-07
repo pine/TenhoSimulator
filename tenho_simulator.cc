@@ -450,7 +450,7 @@ int ppapi_simple_main(int argc, char* argv[]) {
 	PSInstance *instance = PSInstance::GetInstance();
 	TenhoSimulatorProfile  profile;
 	TenhoSimulatorSettings settings;
-	TenhoSimulator         simulator(&settings,&profile);
+	TenhoSimulator         simulator(&settings, &profile);
 	
 	// デバッグレベルの設定
 //	instance->SetVerbosity(PSInstance::PSV_TRACE);
