@@ -12,7 +12,10 @@ TenhoSimulator::TenhoSimulator(
 {
 	this->settings = settings;
 	this->profile  = profile;
-	this->count    = 0;
+	
+	this->param.loop_count = 1000;
+	this->param.set_count  = 1;
+	this->param.length     = 1;
 }
 
 TenhoSimulatorResult TenhoSimulator::compute()
@@ -25,26 +28,39 @@ TenhoSimulatorResult TenhoSimulator::compute()
 	// 演算初期化
 	TenhoSimulatorWorker worker;
 	
+	// 順位回数初期化
 	memset(worker.count, 0, sizeof(worker.count));
 	
-	worker.point       = this->profile->point;
-	worker.grade       = this->profile->grade;
+	// 計算パラメーター初期化
 	worker.sum_rate12  = this->profile->rate_1st + this->profile->rate_2nd;
 	worker.sum_rate123 = worker.sum_rate12       + this->profile->rate_3rd;
 	
 	// シミュレーション
-	for (int32_t i = 0; i < this->count; ++i) {
-		int32_t rank  = this->play(&worker, rnd_double(mt));
-		int32_t point = this->getPoint(&worker, rank);
+	for (int32_t i = 0; i < this->param.set_count; ++i) {
+		// セット毎にポイントと段位は初期化
+		worker.point = this->profile->point;
+		worker.grade = this->profile->grade;
 		
-		this->computeGrade(&worker, point);
-		++worker.count[worker.grade];
+		for (int32_t j = 0; j < this->param.loop_count; ++j) {
+			int32_t rank  = this->play(&worker, rnd_double(mt));
+			int32_t point = this->getPoint(&worker, rank);
+			
+			this->computeGrade(&worker, point);
+			++worker.count[worker.grade];
+		}
 	}
 	
+	// 計算結果
 	TenhoSimulatorResult result;
+	memset(worker.count, 0, sizeof(worker.count));
+	
+	int32_t all_count = this->param.set_count * this->param.loop_count;
+	
+	// ゼロ割り対策
+	if (all_count == 0) { return result; }
 	
 	for (int32_t i = 0; i < GRADE_MAX; ++i) {
-		result.percentage[i] = (double)worker.count[i] / this->count;
+		result.percentage[i] = (double)worker.count[i] / all_count;
 	}
 	
 	return result;
@@ -71,7 +87,7 @@ int32_t TenhoSimulator::getPoint(
 	
 	for (int32_t i = 0; i < TYPE_MAX; ++i) {
 		if (settings->IsCanPlay(i, worker->grade)) {
-			int32_t point = this->settings->GetAcquiredPoint(i, worker->grade, rank, this->length);
+			int32_t point = this->settings->GetAcquiredPoint(i, worker->grade, rank, this->param.length);
 			max_point = std::max(max_point, point);
 		}
 	}

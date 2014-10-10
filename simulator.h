@@ -20,6 +20,12 @@ struct TenhoSimulatorWorker {
 	double sum_rate123;
 };
 
+struct TenhoSimulatorParams {
+	int32_t loop_count;
+	int32_t set_count;
+	int32_t length;
+};
+
 class TenhoSimulator {
 public:
 	TenhoSimulator(
@@ -27,8 +33,7 @@ public:
 		TenhoSimulatorProfile*  profile
 	);
 	
-	int32_t count;
-	int32_t length;
+	TenhoSimulatorParams param;
 	TenhoSimulatorResult compute();
 
 private:
