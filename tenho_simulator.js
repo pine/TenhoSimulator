@@ -201,7 +201,11 @@ var TenhoSimulator = (function() {
     postMessage({ profile: { key: "rate_3rd", value: getDouble('#rate_3rd') }});
     postMessage({ profile: { key: "rate_4th", value: getDouble('#rate_4th') }});
     
-    postMessage({ compute: { count: getInt('#count'), length: getInt('#length') }});
+    postMessage({ compute: {
+      loopCount: getInt('#loop_count'),
+      setCount : getInt('#set_count'),
+      length   : getInt('#length')
+    }});
   }
   
   function drawGraph(data) {

@@ -36,7 +36,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
               <form role="form" class="input">
                 <div class="form-group">
                   <label for="point">現在のポイント</label>
@@ -79,13 +79,18 @@
                 </div>
                 
                 <div class="form-group">
-                  <label for="count">シミュレーション回数</label>
-                  <input type="text" class="form-control" id="count" value="1000">
+                  <label for="count">シミュレーション回数 (試合数)</label>
+                  <input type="text" class="form-control" id="loop_count" value="1000">
+                </div>
+                
+                <div class="form-group">
+                  <label for="count">シミュレーション回数 (試行数)</label>
+                  <input type="text" class="form-control" id="set_count" value="1000">
                 </div>
               </form>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-md-4">
               <form role="form" class="input">
                 <div class="form-group">
                   <label for="rate_1st">1位率</label>
@@ -112,8 +117,10 @@
           <div class="row">
             <div class="col-md-12">
               <div class="desc">
-                <p>順位率は「.250」「0.250」「250」などの記法が可能です。
+                <p>順位率は「 .250 」「 0.250 」「 250 」などの記法が可能です。
                   利用する卓 (一般卓、上級卓等) は、その時の段位で一番得点が高い台を用います。</p>
+                
+                <p>シミュレーション回数は 「 試合数 x 試行数 」 です。設定した 「 試合数 」 を行った時の、平均段位を求めることができます。</p>
                 
                 <p>乱数には天鳳と同じ<a href="http://ja.wikipedia.org/wiki/メルセンヌ・ツイスタ">メルセンヌ・ツイスタ</a> (MT19937) を使用しています。
                   昇段・後段した場合のポイントリセットも含めてシミュレーションしています。</p>
