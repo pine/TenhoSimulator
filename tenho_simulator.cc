@@ -173,10 +173,10 @@ void ComputeMessageHandler(
 	
 	pp::VarDictionary dict(value);
 	
-	assert(dict.HasKey("loop_count"));
-	assert(dict.Get("loop_count").is_int());
-	assert(dict.HasKey("set_count"));
-	assert(dict.Get("set_count").is_int());
+	assert(dict.HasKey("loopCount"));
+	assert(dict.Get("loopCount").is_int());
+	assert(dict.HasKey("setCount"));
+	assert(dict.Get("setCount").is_int());
 	assert(dict.HasKey("length"));
 	assert(dict.Get("length").is_int());
 	
@@ -188,8 +188,8 @@ void ComputeMessageHandler(
 	}
 	
 	// 計算係数
-	simulator->param.loop_count = dict.Get("loop_count").AsInt();
-	simulator->param.set_count  = dict.Get("set_count").AsInt();
+	simulator->param.loop_count = dict.Get("loopCount").AsInt();
+	simulator->param.set_count  = dict.Get("setCount").AsInt();
 	simulator->param.length     = dict.Get("length").AsInt();
 	
 	pthread_t thread;
@@ -208,8 +208,8 @@ void PrintComputePacket(
 	std::stringstream packet;
 	
 	packet << "{ " << key.AsString() << ": ";
-	packet << "{ loop_count: " << dict.Get("loop_count").AsInt();
-	packet << ", set_count: " << dict.Get("set_count").AsInt();
+	packet << "{ loopCount: " << dict.Get("loopCount").AsInt();
+	packet << ", setCount: " << dict.Get("setCount").AsInt();
 	packet << ", length: " << dict.Get("length").AsInt() << " }}";
 	packet << std::endl;
 	

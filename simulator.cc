@@ -52,7 +52,7 @@ TenhoSimulatorResult TenhoSimulator::compute()
 	
 	// 計算結果
 	TenhoSimulatorResult result;
-	memset(worker.count, 0, sizeof(worker.count));
+	memset(result.percentage, 0, sizeof(result.percentage));
 	
 	int32_t all_count = this->param.set_count * this->param.loop_count;
 	
