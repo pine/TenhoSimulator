@@ -96,7 +96,7 @@ var TenhoSimulator = (function() {
     ],
     info: false,
     searching: false,
-    destroy: true,
+    destroy: true, // 再描画が発生する場合、これがないとエラー
     oLanguage: {
       sLengthMenu: "表示行数 _MENU_ 件",
       oPaginate: {
@@ -253,13 +253,15 @@ var TenhoSimulator = (function() {
       data                         // 値
       );
     
+    // 表を表示
     var dt = $('#data_table').DataTable(_.extend({
       data: table_data
     }, DATA_TABLE_TEMPLATE));
     
+    // 確率 降順, 段位 昇順 でソート
     dt
-    .order([ [ 2, 'desc' ], [ 0, 'asc'] ])
-    .draw();
+      .order([ [ 2, 'desc' ], [ 0, 'asc'] ])
+      .draw();
   }
   
   function getDouble(selector) {
