@@ -5,11 +5,13 @@
     <title>天鳳シミュレーター</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="tenho_simulator.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1-beta.2/Chart.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
     <script src="tenho_simulator.js"></script>
   </head>
   <body>
@@ -35,12 +37,12 @@
       
       <div class="row">
         <div class="col-md-4">
-          <div class="row">
-            <div class="col-md-8">
-              <form role="form" class="input">
+          <form role="form" class="input">
+            <div class="row">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label for="point">現在のポイント</label>
-                  <input type="text" class="form-control" id="point" value="0">
+                  <input type="number" class="form-control" id="point" value="0" required min="0">
                 </div>
                 
                 <div class="form-group">
@@ -80,39 +82,37 @@
                 
                 <div class="form-group">
                   <label for="count">シミュレーション回数 (試合数)</label>
-                  <input type="text" class="form-control" id="loop_count" value="1000">
+                  <input type="number" class="form-control" id="loop_count" value="1000" required min="1">
                 </div>
                 
                 <div class="form-group">
                   <label for="count">シミュレーション回数 (試行数)</label>
-                  <input type="text" class="form-control" id="set_count" value="1000">
+                  <input type="number" class="form-control" id="set_count" value="1000" required min="1">
                 </div>
-              </form>
-            </div>
-            
-            <div class="col-md-4">
-              <form role="form" class="input">
+              </div>
+              
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="rate_1st">1位率</label>
-                  <input type="text" class="form-control" id="rate_1st" value=".250">
+                  <input type="text" class="form-control" id="rate_1st" value=".250" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">2位率</label>
-                  <input type="text" class="form-control" id="rate_2nd" value=".250">
+                  <input type="text" class="form-control" id="rate_2nd" value=".250" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">3位率</label>
-                  <input type="text" class="form-control" id="rate_3rd" value=".250">
+                  <input type="text" class="form-control" id="rate_3rd" value=".250" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">4位率</label>
-                  <input type="text" class="form-control" id="rate_4th" value=".250">
+                  <input type="text" class="form-control" id="rate_4th" value=".250" required>
                 </div>
                 
                 <button type="submit" class="btn btn-default pull-right">計算</button>
-              </form>
+              </div>
             </div>
-          </div>
+          </form>
           
           <div class="row">
             <div class="col-md-12">
@@ -138,6 +138,9 @@
           <script type="text/template" id="graph_template">
           <canvas height="400" width="700"></canvas>
           </script>
+          
+          <table id="data_table">
+          </table>
         </div>
       </div>
     </div>
@@ -146,6 +149,7 @@
     <div id="pnacl_wrap">
       <script>
         !function() {
+          'use strict';
           var wrap = document.getElementById('pnacl_wrap');
           wrap.addEventListener('load', TenhoSimulator.onLoad, true);
           wrap.addEventListener('message', TenhoSimulator.onMessage, true);

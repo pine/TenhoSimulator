@@ -1,4 +1,6 @@
 var TenhoSimulator = (function() {
+  'use strict';
+  
   var NACL_MODULE = null;
 
   var TYPE_MAX   = 4; // 一般, 上級, 特上, 鳳凰
@@ -83,6 +85,26 @@ var TenhoSimulator = (function() {
         highlightStroke: "rgba(151,187,205,1)"
       }
     ]
+  };
+  
+  // データテーブルテンプレート
+  var DATA_TABLE_TEMPLATE = {
+    columns: [
+      { title: '#'    },
+      { title: '段位' },
+      { title: '確率' }
+    ],
+    info: false,
+    searching: false,
+    destroy: true,
+    oLanguage: {
+      sLengthMenu: "表示行数 _MENU_ 件",
+      oPaginate: {
+          sNext: "次のページ",
+          sPrevious: "前のページ"
+      },
+      sInfo: "全_TOTAL_件中 _START_件から_END_件を表示"
+    }
   };
   
   function postMessage(msg) {
@@ -216,12 +238,28 @@ var TenhoSimulator = (function() {
     canvas_wrap.html(template());
     
     var context = canvas_wrap.find('canvas')[0].getContext('2d');
-    var graph   = _.clone(GRAPH_TEMPLATE);
+    var graph   = _.extend({}, GRAPH_TEMPLATE);
     
     graph.datasets[0].data = data;
-    graph.labels = _.clone(GRADE_LIST); // 何故かラベルが減っていくバグがあるため追加
+    graph.labels = [].concat(GRADE_LIST); // 何故かラベルが減っていくバグがあるため追加
     
-    new Chart(context).Bar(graph).removeData();
+    new Chart(context).Bar(graph);
+  }
+  
+  function drawDataTable(data) {
+    var table_data = _.zip(
+      _.range(1, data.length + 1), // 連番
+      [].concat(GRADE_LIST),       // 段位
+      data                         // 値
+      );
+    
+    var dt = $('#data_table').DataTable(_.extend({
+      data: table_data
+    }, DATA_TABLE_TEMPLATE));
+    
+    dt
+    .order([ [ 2, 'desc' ], [ 0, 'asc'] ])
+    .draw();
   }
   
   function getDouble(selector) {
@@ -255,7 +293,7 @@ var TenhoSimulator = (function() {
       }
       
       catch(e) {
-        $('#graph_area').text('エラーが発生しました。未対応のブラウザのようです。');
+        $('#graph_area').text('エラーが発生しました。未対応のブラウザか、まだロード中です。');
       }
     });
   });
@@ -272,6 +310,7 @@ var TenhoSimulator = (function() {
       
       if (data.computed) {
         drawGraph(data.computed);
+        drawDataTable(data.computed);
       }
     }
   };
