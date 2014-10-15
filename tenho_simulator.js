@@ -96,7 +96,7 @@ var TenhoSimulator = (function() {
     ],
     info: false,
     searching: false,
-    destroy: true,
+    destroy: true, // 再描画が発生する場合、これがないとエラー
     oLanguage: {
       sLengthMenu: "表示行数 _MENU_ 件",
       oPaginate: {
@@ -106,6 +106,19 @@ var TenhoSimulator = (function() {
       sInfo: "全_TOTAL_件中 _START_件から_END_件を表示"
     }
   };
+  
+  // 記憶するデータ
+  var SAVED_ITEMS = [
+      ["point",     '#point'     ],
+      ["grade",     '#grade'     ],
+      ["rate_1st",  '#rate_1st'  ],
+      ["rate_2nd",  '#rate_2nd'  ],
+      ["rate_3rd",  '#rate_3rd'  ],
+      ["rate_4th",  '#rate_4th'  ],
+      ["loopCount", '#loop_count'],
+      ["setCount",  '#set_count' ],
+      ["length",    '#length'    ]
+  ];
   
   function postMessage(msg) {
     NACL_MODULE.postMessage(msg);
@@ -215,13 +228,18 @@ var TenhoSimulator = (function() {
   }
   
   function startPnaclModule() {
-    postMessage({ profile: { key: "point", value: getInt('#point') }});
-    postMessage({ profile: { key: "grade", value: getInt('#grade') }});
+    var profile_items = [
+      ["point",    getInt('#point')],
+      ["grade",    getInt('#grade')],
+      ["rate_1st", getDouble('#rate_1st')],
+      ["rate_2nd", getDouble('#rate_2nd')],
+      ["rate_3rd", getDouble('#rate_3rd')],
+      ["rate_4th", getDouble('#rate_4th')]
+    ];
     
-    postMessage({ profile: { key: "rate_1st", value: getDouble('#rate_1st') }});
-    postMessage({ profile: { key: "rate_2nd", value: getDouble('#rate_2nd') }});
-    postMessage({ profile: { key: "rate_3rd", value: getDouble('#rate_3rd') }});
-    postMessage({ profile: { key: "rate_4th", value: getDouble('#rate_4th') }});
+    for (var i = 0; i < profile_items.length; ++i) {
+      postMessage({ profile: { key: profile_items[i][0], value: profile_items[i][1] }});
+    }
     
     postMessage({ compute: {
       loopCount: getInt('#loop_count'),
@@ -253,13 +271,15 @@ var TenhoSimulator = (function() {
       data                         // 値
       );
     
+    // 表を表示
     var dt = $('#data_table').DataTable(_.extend({
       data: table_data
     }, DATA_TABLE_TEMPLATE));
     
+    // 確率 降順, 段位 昇順 でソート
     dt
-    .order([ [ 2, 'desc' ], [ 0, 'asc'] ])
-    .draw();
+      .order([ [ 2, 'desc' ], [ 0, 'asc'] ])
+      .draw();
   }
   
   function getDouble(selector) {
@@ -283,7 +303,30 @@ var TenhoSimulator = (function() {
     return parseInt(text, 10);
   }
   
+  function saveItems() {
+    _.each(SAVED_ITEMS, function(item) {
+      var key      = item[0];
+      var selector = item[1];
+      
+      window.localStorage.setItem(key, $(selector).val());
+    });
+  }
+  
+  function loadItems() {
+    _.each(SAVED_ITEMS, function(item) {
+      var key      = item[0];
+      var selector = item[1];
+      var val      = window.localStorage.getItem(key);
+      
+      if (val) {
+        $(selector).val(val);
+      }
+    });
+  }
+  
   $(function() {
+    loadItems();
+    
     $('.input').submit(function(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -295,6 +338,10 @@ var TenhoSimulator = (function() {
       catch(e) {
         $('#graph_area').text('エラーが発生しました。未対応のブラウザか、まだロード中です。');
       }
+    });
+    
+    $('.input').change(function() {
+      saveItems();
     });
   });
   
