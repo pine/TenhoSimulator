@@ -9,6 +9,7 @@ install:
   - cd nacl_sdk
   - ls
   - ./naclsdk list
-  - ./naclsdk update
+  - ./naclsdk update pepper_37
+  - export NACL_SDK_ROOT="`pwd`/pepper_37"
   - cd ..
-script:
+script: make
