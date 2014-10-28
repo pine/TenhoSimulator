@@ -2,6 +2,8 @@ language: cpp
 compiler:
   - gcc
 before_install:
+  - echo $LANG
+  - echo $LC_ALL
   - wget http://storage.googleapis.com/nativeclient-mirror/nacl/nacl_sdk/nacl_sdk.zip
 os:
   - linux
