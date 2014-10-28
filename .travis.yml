@@ -5,5 +5,9 @@ before_install:
   - echo $LANG
   - echo $LC_ALL
   - wget http://storage.googleapis.com/nativeclient-mirror/nacl/nacl_sdk/nacl_sdk.zip
+  - unzip nacl_sdk.zip
+  - cd nacl_sdk
+install:
+script:
 os:
   - linux
