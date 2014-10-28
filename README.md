@@ -1,5 +1,6 @@
 Tenho Simulator
 ==============
+[![Build Status](https://travis-ci.org/pine613/TenhoSimulator.svg?branch=master)](https://travis-ci.org/pine613/TenhoSimulator)
 
 High Speed Tenho Simulator using PNaCL ([Google Native Client](https://developer.chrome.com/native-client/overview))  technology.
 
