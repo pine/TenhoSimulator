@@ -1,13 +1,12 @@
-language: cpp
-compiler:
-  - gcc
-before_install:
+language: python
+python:
+  - "2.7"
+install:
   - echo $LANG
   - echo $LC_ALL
   - wget http://storage.googleapis.com/nativeclient-mirror/nacl/nacl_sdk/nacl_sdk.zip
   - unzip nacl_sdk.zip
   - cd nacl_sdk
-install:
+  - ls
+  - ./naclsdk list
 script:
-os:
-  - linux
