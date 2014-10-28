@@ -1,12 +1,10 @@
-language: python
-python:
-  - "2.7"
+language: cpp
 install:
-  - echo $LANG
-  - echo $LC_ALL
   - wget http://storage.googleapis.com/nativeclient-mirror/nacl/nacl_sdk/nacl_sdk.zip
   - unzip nacl_sdk.zip
   - cd nacl_sdk
   - ls
   - ./naclsdk list
+  - ./naclsdk update
+  - cd ..
 script:
