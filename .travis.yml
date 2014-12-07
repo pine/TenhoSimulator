@@ -3,5 +3,5 @@ python:
   - "2.7"
 install:
   - wget https://raw.githubusercontent.com/pine613/ci_scripts/master/travis/linux/install_nacl_sdk.sh
- - bash ./install_nacl_sdk.sh pepper_37
+  - bash ./install_nacl_sdk.sh pepper_37
 script: make
