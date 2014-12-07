@@ -2,17 +2,6 @@ language: python
 python:
   - "2.7"
 install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq libc6-i386 lib32gcc1 lib32stdc++6
-  - wget http://storage.googleapis.com/nativeclient-mirror/nacl/nacl_sdk/nacl_sdk.zip
-  - unzip nacl_sdk.zip
-  - cd nacl_sdk
-  - ls
-  - ./naclsdk list
-  - ./naclsdk update pepper_37
-  - ls
-  - export NACL_SDK_ROOT="`pwd`/pepper_37"
-  - echo $NACL_SDK_ROOT
-  - cd ..
-  - ls
+  - wget https://raw.githubusercontent.com/pine613/ci_scripts/master/travis/linux/install_nacl_sdk.sh
+ - bash ./install_nacl_sdk.sh pepper_37
 script: make
